@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Webstore</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="bg-glow"></div>
+
+    <div class="container">
+        <header id="profile-section" class="glass-card">
+            <img id="profile-img" src="" alt="Profile Picture">
+            <h1 id="profile-name"></h1>
+            <p id="profile-username" class="username"></p>
+            <p id="profile-desc" class="description"></p>
+            
+            <div class="social-links" id="social-links">
+                </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-target="home">Home</button>
+            <button class="tab-btn" data-target="panel">Panel Pterodactyl</button>
+            <button class="tab-btn" data-target="store">Produk</button>
+            <button class="tab-btn" data-target="contact">Kontak</button>
+        </nav>
+
+        <main>
+            <section id="home" class="tab-content active">
+                <div class="glass-card welcome-card">
+                    <h2>Selamat Datang!</h2>
+                    <p>Silakan navigasi melalui menu di atas untuk melihat produk dan layanan yang tersedia.</p>
+                </div>
+            </section>
+
+            <section id="panel" class="tab-content">
+                <div class="section-header">
+                    <h2>Panel Pterodactyl</h2>
+                    <p>Pilih paket panel sesuai kebutuhan Anda.</p>
+                </div>
+                <div class="grid-container" id="panel-grid"></div>
+            </section>
+
+            <section id="store" class="tab-content">
+                <div class="glass-card">
+                    <h2>Store</h2>
+                    <p>Produk lainnya akan segera hadir di sini.</p>
+                </div>
+            </section>
+
+            <section id="contact" class="tab-content">
+                <div class="glass-card">
+                    <h2>Kontak</h2>
+                    <p>Punya pertanyaan? Silakan hubungi saya melalui WhatsApp atau media sosial.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p id="footer-text"></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
