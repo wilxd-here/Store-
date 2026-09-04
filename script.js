@@ -1,163 +1,134 @@
 /* =========================================
-   1. SISTEM KONFIGURASI 
-   Silakan ubah data di dalam const config ini
-   ========================================= */
-const config = {
-    profile: {
-        name: "[NAMA]",
-        username: "@[USERNAME]",
-        description: "[DESKRIPSI PROFIL] Seorang kreator dan penyedia layanan Panel Pterodactyl terpercaya.",
-        // Gunakan link gambar Anda, atau biarkan placeholder ini
-        photo: "https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff&size=200" 
-    },
-
-    social: {
-        tiktok: "https://tiktok.com/@[USERNAME]",
-        instagram: "https://instagram.com/[USERNAME]",
-        whatsapp: "https://wa.me/62895384482069",
-        youtube: "https://youtube.com/@[USERNAME]"
-    },
-
-    panel: [
-        {
-            name: "2 GB",
-            price: "Rp 5.000 / Bulan",
-            cpu: "50%",
-            storage: "5 GB"
-        },
-        {
-            name: "3 GB",
-            price: "Rp 10.000 / Bulan",
-            cpu: "100%",
-            storage: "10 GB"
-        },
-        {
-            name: "5 GB",
-            price: "Rp 15.000 / Bulan",
-            cpu: "150%",
-            storage: "15 GB"
-        },
-        {
-            name: "8 GB",
-            price: "Rp 20.000 / Bulan",
-            cpu: "200%",
-            storage: "25 GB"
-        },
-        {
-            name: "10 GB",
-            price: "Rp 25.000 / Bulan",
-            cpu: "250%",
-            storage: "30 GB"
-        },
-        {
-            name: "Unlimited",
-            price: "Rp 50.000 / Bulan",
-            cpu: "Unlimited",
-            storage: "Unlimited"
-        }
-    ]
-};
-
-/* =========================================
-   2. FUNGSI MERENDER DATA PROFIL
-   ========================================= */
-function renderProfile() {
-    document.getElementById('profile-img').src = config.profile.photo;
-    document.getElementById('profile-name').textContent = config.profile.name;
-    document.getElementById('profile-username').textContent = config.profile.username;
-    document.getElementById('profile-desc').textContent = config.profile.description;
-    
-    // Setting copyright tahun dinamis untuk footer
-    document.getElementById('footer-text').innerHTML = `&copy; 2026 ${config.profile.name}. All rights reserved.`;
-
-    // Render Social Links dengan icon FontAwesome
-    const socialContainer = document.getElementById('social-links');
-    const socialIcons = {
-        tiktok: '<i class="fa-brands fa-tiktok"></i>',
-        instagram: '<i class="fa-brands fa-instagram"></i>',
-        whatsapp: '<i class="fa-brands fa-whatsapp"></i>',
-        youtube: '<i class="fa-brands fa-youtube"></i>'
-    };
-
-    for (let platform in config.social) {
-        if (config.social[platform]) {
-            const link = document.createElement('a');
-            link.href = config.social[platform];
-            link.target = "_blank";
-            link.className = "social-btn";
-            link.title = platform;
-            link.innerHTML = socialIcons[platform];
-            socialContainer.appendChild(link);
-        }
-    }
-}
-
-/* =========================================
-   3. FUNGSI MERENDER PANEL PTERODACTYL
-   ========================================= */
-function renderPanels() {
-    const gridContainer = document.getElementById('panel-grid');
-    gridContainer.innerHTML = ''; // Bersihkan kontainer
-
-    config.panel.forEach(pkg => {
-        const card = document.createElement('div');
-        card.className = 'package-card';
-        
-        card.innerHTML = `
-            <div class="pkg-name">${pkg.name}</div>
-            <ul class="pkg-specs">
-                <li><i class="fa-solid fa-memory"></i> RAM: ${pkg.name}</li>
-                <li><i class="fa-solid fa-microchip"></i> CPU: ${pkg.cpu}</li>
-                <li><i class="fa-solid fa-hard-drive"></i> Storage: ${pkg.storage}</li>
-            </ul>
-            <div class="pkg-price">${pkg.price}</div>
-            <button class="btn-order" onclick="orderPanel('${pkg.name}')">
-                <i class="fa-brands fa-whatsapp"></i> Order
-            </button>
-        `;
-        gridContainer.appendChild(card);
-    });
-}
-
-/* =========================================
-   4. SISTEM ORDER WHATSAPP
+   1. STATE & FUNGSIONALITAS WHATSAPP ORDER
    ========================================= */
 const whatsappNumber = "62895384482069";
 
-function orderPanel(packageName) {
-    const message = `Order Panel ${packageName}`;
+let selectedSpec = {
+    ram: "2 GB",
+    cpu: "50%",
+    storage: "5 GB",
+    price: "Rp 5.000"
+};
+
+function selectRAM(ram, cpu, storage, price) {
+    selectedSpec = { ram, cpu, storage, price };
+
+    // Update Tampilan Info
+    document.getElementById('disp-ram').textContent = ram;
+    document.getElementById('disp-cpu').textContent = cpu;
+    document.getElementById('disp-storage').textContent = storage;
+    document.getElementById('disp-price').textContent = price;
+
+    // Toggle Active Class pada Tombol
+    const buttons = document.querySelectorAll('#ram-selector .chip-btn');
+    buttons.forEach(btn => {
+        if (btn.textContent.includes(ram)) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+}
+
+function executeOrder() {
+    const message = `Order Panel ${selectedSpec.ram}`;
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
 }
 
 /* =========================================
-   5. SISTEM NAVIGASI (SLIDE TABS)
+   2. LOADER & SCROLL REVEAL EFEK
    ========================================= */
-function setupTabs() {
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
+window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 800);
+    }
+});
 
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Hilangkan status aktif dari semua tombol dan konten
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
+// Scroll Progress Bar
+window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById('progress-bar').style.width = scrolled + '%';
 
-            // Tambahkan status aktif pada tombol yang diklik
-            button.classList.add('active');
-            
-            // Tampilkan konten yang sesuai dengan data-target
-            const targetId = button.getAttribute('data-target');
-            document.getElementById(targetId).classList.add('active');
-        });
+    // Back to Top Button Visibility
+    const backToTop = document.getElementById('back-to-top');
+    if (winScroll > 300) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+
+    // Scroll Reveal Effect
+    const reveals = document.querySelectorAll('.reveal');
+    reveals.forEach(reveal => {
+        const windowHeight = window.innerHeight;
+        const revealTop = reveal.getBoundingClientRect().top;
+        if (revealTop < windowHeight - 100) {
+            reveal.classList.add('reveal-visible');
+        }
     });
-}
+});
+
+document.getElementById('back-to-top').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
 /* =========================================
-   6. INISIALISASI WEBSITE SAAT DIMUAT
+   3. LIVE WIDGET (JAM & TANGGAL)
    ========================================= */
-document.addEventListener('DOMContentLoaded', () => {
-    renderProfile();
-    renderPanels();
-    setupTabs();
-});
+function updateWidget() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('id-ID') + " WIB";
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateStr = now.toLocaleDateString('id-ID', options);
+
+    document.getElementById('widget-time').textContent = `⌚ ${timeStr}`;
+    document.getElementById('widget-date').textContent = `📅 ${dateStr}`;
+}
+setInterval(updateWidget, 1000);
+updateWidget();
+
+/* =========================================
+   4. PARTICLES CANVAS ANIMATION
+   ========================================= */
+const canvas = document.getElementById('particles-canvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const particles = Array.from({ length: 45 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    radius: Math.random() * 2 + 1,
+    dx: (Math.random() - 0.5) * 0.5,
+    dy: (Math.random() - 0.5) * 0.5
+}));
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(0, 210, 255, 0.4)';
+
+    particles.forEach(p => {
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    requestAnimationFrame(animateParticles);
+}
+animateParticles();
