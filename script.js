@@ -13,13 +13,11 @@ let selectedSpec = {
 function selectRAM(ram, cpu, storage, price) {
     selectedSpec = { ram, cpu, storage, price };
 
-    // Update Tampilan Info
     document.getElementById('disp-ram').textContent = ram;
     document.getElementById('disp-cpu').textContent = cpu;
     document.getElementById('disp-storage').textContent = storage;
     document.getElementById('disp-price').textContent = price;
 
-    // Toggle Active Class pada Tombol
     const buttons = document.querySelectorAll('#ram-selector .chip-btn');
     buttons.forEach(btn => {
         if (btn.textContent.includes(ram)) {
@@ -47,14 +45,13 @@ window.addEventListener('load', () => {
     }
 });
 
-// Scroll Progress Bar
+// Scroll Progress Bar & Reveal
 window.addEventListener('scroll', () => {
     const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrolled = (winScroll / height) * 100;
     document.getElementById('progress-bar').style.width = scrolled + '%';
 
-    // Back to Top Button Visibility
     const backToTop = document.getElementById('back-to-top');
     if (winScroll > 300) {
         backToTop.classList.add('visible');
@@ -62,7 +59,6 @@ window.addEventListener('scroll', () => {
         backToTop.classList.remove('visible');
     }
 
-    // Scroll Reveal Effect
     const reveals = document.querySelectorAll('.reveal');
     reveals.forEach(reveal => {
         const windowHeight = window.innerHeight;
@@ -78,22 +74,7 @@ document.getElementById('back-to-top').addEventListener('click', () => {
 });
 
 /* =========================================
-   3. LIVE WIDGET (JAM & TANGGAL)
-   ========================================= */
-function updateWidget() {
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString('id-ID') + " WIB";
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const dateStr = now.toLocaleDateString('id-ID', options);
-
-    document.getElementById('widget-time').textContent = `⌚ ${timeStr}`;
-    document.getElementById('widget-date').textContent = `📅 ${dateStr}`;
-}
-setInterval(updateWidget, 1000);
-updateWidget();
-
-/* =========================================
-   4. PARTICLES CANVAS ANIMATION
+   3. PARTICLES CANVAS ANIMATION
    ========================================= */
 const canvas = document.getElementById('particles-canvas');
 const ctx = canvas.getContext('2d');
