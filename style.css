@@ -142,7 +142,59 @@ body {
 }
 @keyframes breathe {
     0% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
-    100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.7; }
+    100% { tran/* Card Container Profil */
+.hero-card {
+    max-width: 480px;
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 35px 25px;
+    background: rgba(18, 18, 22, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+}
+
+.hero-description {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 15px 0 25px 0;
+    line-height: 1.5;
+}
+
+/* Row Tombol Lingkaran Social Connect */
+.social-circle-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.social-circle-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.social-circle-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+.social-circle-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--primary-light);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 112, 243, 0.3);
+}
+sform: translate(-50%, -50%) scale(1.15); opacity: 0.7; }
 }
 .hero-title {
     font-family: var(--font-display); font-size: 3.5rem; font-weight: 800;
