@@ -113,3 +113,27 @@ function animateParticles() {
     requestAnimationFrame(animateParticles);
 }
 animateParticles();
+/* =========================================
+   4. LOGIKA PEMUTAR MUSIK
+   ========================================= */
+const musicBtn = document.getElementById('music-btn');
+const bgMusic = document.getElementById('bg-music');
+const iconPlay = document.getElementById('icon-play');
+const iconPause = document.getElementById('icon-pause');
+
+if (musicBtn && bgMusic) {
+    musicBtn.addEventListener('click', () => {
+        if (bgMusic.paused) {
+            bgMusic.play().then(() => {
+                iconPlay.style.display = 'none';
+                iconPause.style.display = 'block';
+            }).catch(err => {
+                console.log("Gagal memutar audio:", err);
+            });
+        } else {
+            bgMusic.pause();
+            iconPlay.style.display = 'block';
+            iconPause.style.display = 'none';
+        }
+    });
+}
